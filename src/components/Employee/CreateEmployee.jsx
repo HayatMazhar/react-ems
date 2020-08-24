@@ -21,8 +21,8 @@ const EmployeeForm = () => (
       validationSchema={schema}
       onSubmit={console.log}
       initialValues={{
-        firstName: "Mark",
-        lastName: "Otto",
+        firstName: "Mazhar",
+        lastName: "Hayat",
       }}
     >
       {({
