@@ -1,0 +1,8 @@
+//BASE
+@import './variables';
+@import './base';
+@import './animations';
+
+//COMPONENTS
+@import '../components/Navigation/Navigation.scss';
+@import '../components/Home/Home.scss';
