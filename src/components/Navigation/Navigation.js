@@ -20,7 +20,7 @@ const Navigation = ()=>{
 
     return (
         <nav className="navigation">
-            <div className="navigation__title">Alexander</div>
+            <div className="navigation__title">Employee Management System</div>
             <div className="navigation__menus" style={{visibility:navToggle, opacity:opacity}}  >
                 <NavLink className="navigation__item "  exact to="/" activeClassName="navigation--active">home</NavLink>
                 <NavLink className="navigation__item" to="about" activeClassName="navigation--active">about</NavLink>
