@@ -3,6 +3,7 @@ import * as yup from "yup"; // for everything
 import { Button, Col, InputGroup, Form } from "react-bootstrap";
 import { Formik } from "formik";
 
+
 const schema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
@@ -12,10 +13,6 @@ const schema = yup.object({
   zip: yup.string().required(),
   terms: yup.bool().required(),
 });
-
-const ResteForm =() =>(
-    this.Formik.resetForm({})
-)
 
 const EmployeeForm = () => (
   <div className="employeemain mb-4">
@@ -145,7 +142,7 @@ const EmployeeForm = () => (
             {" "}
             Submit
           </Button>{" "}
-          <Button onClick={() => ResteForm()} variant="secondary" size="lg" active>
+          <Button onClick={handleReset} variant="secondary" size="lg" active>
             Reset
           </Button>
         </Form>
