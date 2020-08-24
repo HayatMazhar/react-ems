@@ -178,3 +178,24 @@
     margin-top: 9rem;
 
 }
+
+.employeemain{
+    margin:0 auto;
+    width: 75rem;
+    line-height: 1.5;
+    text-align: center;
+    // color: #2998ff;
+    padding: 2rem 3rem;
+    border-radius: 4px;
+    box-shadow: 0 1.5rem 2rem rgba($color-black, .2);
+    font-size: 1.8rem;
+    animation: moveInTop 1s ease-out;
+
+    margin-top: 18rem;
+
+
+    &__description{
+        text-align: left;
+        margin-top: 1rem;
+    }
+}
