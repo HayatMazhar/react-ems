@@ -1,133 +1,157 @@
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup"; // for everything
 import { Button, Col, InputGroup, Form } from "react-bootstrap";
 import { Formik } from "formik";
 
+const initialValues = {
+  firstName: "Mazhar",
+  lastName: "",
+  username: "",
+  city: "",
+  state: "",
+  zip: "",
+};
 
-const schema = yup.object({
+const savedValues = {
+  firstName: "Hayat",
+  lastName: "Mazhar",
+  userName: "Mazhar1783",
+  city: "Dubai",
+  state: "Ajman",
+  zip: "",
+};
+const onSubmit = (values, submitProps) => {
+  console.log("Form data", values);
+  console.log("submitProps", submitProps);
+  submitProps.setSubmitting(false);
+  submitProps.resetForm();
+};
+
+const validationSchema = yup.object({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  username: yup.string().required(),
+  email: yup.string().email("Invaid email format").required(),
   city: yup.string().required(),
   state: yup.string().required(),
   zip: yup.string().required(),
   terms: yup.bool().required(),
 });
 
-const EmployeeForm = () => (
-  <div className="employeemain mb-4">
-    <h1 className="mb-4"> Create Employee</h1>
-    <Formik
-      validationSchema={schema}
-      onSubmit={console.log}
-      initialValues={{
-        firstName: "Mazhar",
-        lastName: "Hayat",
-      }}
-    >
-      {({
-        handleSubmit,
-        handleReset,
-        handleChange,
-        handleBlur,
-        values,
-        touched,
-        isValid,
-        errors,
-      }) => (
-        <Form noValidate onReset={handleReset} onSubmit={handleSubmit}>
-          <Form.Row>
-            <Form.Group as={Col} md="4" controlId="validationFormik01">
-              <Form.Label>First name</Form.Label>
-              <Form.Control
-                type="text"
-                name="firstName"
-                value={values.firstName}
-                onChange={handleChange}
-                isValid={touched.firstName && !errors.firstName}
-              />
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationFormik02">
-              <Form.Label>Last name</Form.Label>
-              <Form.Control
-                type="text"
-                name="lastName"
-                value={values.lastName}
-                onChange={handleChange}
-                isValid={touched.lastName && !errors.lastName}
-              />
+function EmployeeCreateForm() {
+  const [formValues, setFormValues] = useState(null);
+  return (
+    <div className="employeemain mb-4">
+      <h1 className="mb-4"> Create Employee</h1>
+      <Formik
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        initialValues={formValues || initialValues}
+        enableReinitialize
+      >
+        {(formik) => {
+          console.log("Formik props", formik);
+          return (
+            <Form
+              noValidate
+              onReset={formik.handleReset}
+              onSubmit={formik.handleSubmit}
+            >
+              <Form.Row>
+                <Form.Group as={Col} md="4" controlId="validationFormik01">
+                  <Form.Label>First name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="firstName"
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    isValid={
+                      formik.touched.firstName && !formik.errors.firstName
+                    }
+                  />
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="4" controlId="validationFormik02">
+                  <Form.Label>Last name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="lastName"
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    isValid={formik.touched.lastName && !formik.errors.lastName}
+                  />
 
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="4" controlId="validationFormikUsername">
-              <Form.Label>Username</Form.Label>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  type="text"
-                  placeholder="Username"
-                  aria-describedby="inputGroupPrepend"
-                  name="username"
-                  value={values.username}
-                  onChange={handleChange}
-                  isInvalid={!!errors.username}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.username}
-                </Form.Control.Feedback>
-              </InputGroup>
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col} md="6" controlId="validationFormik03">
-              <Form.Label>City</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="City"
-                name="city"
-                value={values.city}
-                onChange={handleChange}
-                isInvalid={!!errors.city}
-              />
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="4" controlId="validationFormikEmail">
+                  <Form.Label>Email</Form.Label>
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id="inputGroupPrepend">
+                        @
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control
+                      type="text"
+                      placeholder="Email"
+                      aria-describedby="inputGroupPrepend"
+                      name="email"
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      isInvalid={formik.touched.email && !!formik.errors.email}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.email}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
+              </Form.Row>
+              <Form.Row>
+                <Form.Group as={Col} md="6" controlId="validationFormik03">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="City"
+                    name="city"
+                    value={formik.values.city}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.touched.city && !!formik.errors.city}
+                  />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.city}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik04">
-              <Form.Label>State</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="State"
-                name="state"
-                value={values.state}
-                onChange={handleChange}
-                isInvalid={!!errors.state}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.state}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} md="3" controlId="validationFormik05">
-              <Form.Label>Zip</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Zip"
-                name="zip"
-                value={values.zip}
-                onChange={handleChange}
-                isInvalid={!!errors.zip}
-              />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.city}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="3" controlId="validationFormik04">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="State"
+                    name="state"
+                    value={formik.values.state}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.touched.state && !!formik.errors.state}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.state}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="3" controlId="validationFormik05">
+                  <Form.Label>Zip</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Zip"
+                    name="zip"
+                    value={formik.values.zip}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.touched.zip && !!formik.errors.zip}
+                  />
 
-              <Form.Control.Feedback type="invalid">
-                {errors.zip}
-              </Form.Control.Feedback>
-            </Form.Group>
-          </Form.Row>
-          {/* <Form.Group>
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.zip}
+                  </Form.Control.Feedback>
+                </Form.Group>
+              </Form.Row>
+              {/* <Form.Group>
             <Form.Check
               required
               name="terms"
@@ -138,18 +162,33 @@ const EmployeeForm = () => (
               id="validationFormik0"
             />
           </Form.Group> */}
-          <Button type="submit" variant="primary" size="lg" active>
-            {" "}
-            Submit
-          </Button>{" "}
-          <Button onClick={handleReset} variant="secondary" size="lg" active>
-            Reset
-          </Button>
-        </Form>
-      )}
-    </Formik>
-  </div>
-);
-const CreateEmployee = () => EmployeeForm();
+              <Button
+                type="button"
+                className="btn btn-success mr-2"
+                onClick={() => setFormValues(savedValues)}
+              >
+                Load saved data
+              </Button>
+              <Button
+                type="reset"
+                className="btn btn-secondary mr-2"
+                onClick={() => setFormValues(null)}
+              >
+                Reset
+              </Button>
+              <Button
+                type="submit"
+                className="btn btn-primary mr-2"
+                disabled={!formik.isValid || formik.isSubmitting}
+              >
+                Submit
+              </Button>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
+}
 
-export default CreateEmployee;
+export default EmployeeCreateForm;
